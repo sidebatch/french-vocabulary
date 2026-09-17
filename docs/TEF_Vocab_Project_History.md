@@ -2,7 +2,7 @@
 
 **Document purpose:** preserve the project’s memory so a future developer or a new GPT session can continue the app without losing small design intentions, user feedback, learning-engine philosophy, or reasons behind seemingly minor UI choices.
 
-**Documented baseline:** `TEF_Vocab_Loop_v2_6.html`  
+**Documented baseline:** `TEF_Vocab_Loop_v2_13_0.html`  
 **Vocabulary corpus:** 2,866 unique study cards  
 **Primary use case:** a Korean-speaking learner studying French vocabulary for practical use and TEF-oriented progression, especially through short, repeatable mobile study sessions.  
 **Primary device/workflow:** Android phone and laptop; a downloaded single HTML file that can be opened directly is intentionally acceptable.
@@ -1713,3 +1713,258 @@ The new examples deliberately teach usable situations and collocations:
 
 The example-quality project remains staged. The next obvious bulk families are in B1-B2 environment, news, religion, and history.
 
+
+
+---
+
+# 50. v2.9.3 — finishing the explicit high-confidence template queue
+
+The v2.9.2 handoff identified five remaining repetitive families with high confidence. Rather than switching immediately to a looser semantic audit, the project first finished those known groups.
+
+v2.9.3 changed 144 cards across history, environment, current affairs, religion, and health.
+
+The important design rule remained:
+
+> Example replacement is a three-language operation: French example, Korean translation, and English sidecar translation move together.
+
+Original vocabulary identity and learner progress must not be touched during example-only work.
+
+---
+
+# 51. v2.10 — examples become an active production exercise
+
+The user wanted to study the improved examples not only by reading them but by typing them.
+
+Two distinct learning intentions emerged.
+
+### Copy mode
+
+The learner sees:
+
+- French sentence,
+- Korean/English translation,
+- typing field.
+
+The goal is not blind keyboard copying. The learner should read the meaning and connect the sentence form to that meaning while reproducing it.
+
+### Recall mode
+
+The learner sees only the translation and reconstructs the French sentence.
+
+This is substantially closer to production and therefore must not share the same progress counter as Copy mode.
+
+### Answer-checking philosophy
+
+The project intentionally stopped treating superficial formatting as language failure.
+
+Accepted differences:
+
+- initial uppercase/lowercase,
+- final `.`, `!`, or `?`.
+
+Still meaningful:
+
+- accents,
+- spelling,
+- missing/extra lexical words,
+- articles,
+- prepositions,
+- conjugation,
+- meaningful internal punctuation/structure.
+
+Wrong portions are highlighted rather than only showing a generic wrong state.
+
+---
+
+# 52. Sentence repetitions and graduation
+
+The user wanted each sentence to show how often that exact sentence had been practiced.
+
+The design became:
+
+- Copy count per sentence,
+- Recall count per sentence,
+- counts persist,
+- practiced sentences are **not removed from random selection merely because they were seen once**.
+
+A graduation threshold of **15** was chosen.
+
+Graduation is per mode:
+
+- Copy 15/15 does not graduate Recall,
+- Recall 15/15 does not alter Copy count.
+
+Graduated sentences are browseable in a dedicated 🎓 library by mode.
+
+This creates visible long-term progress without forcing a sentence to disappear after one completion.
+
+---
+
+# 53. Sentence practice becomes a separate resumable study screen
+
+As typing features grew, keeping all controls embedded inside the Sentence library made the page too tall and created mobile action-button problems.
+
+The architecture was therefore split:
+
+- Sentence tab = browse/filter/library/graduate hub,
+- Sentence Study page = focused typing session.
+
+This follows the same product logic as word study: browsing and active testing should not compete for screen space.
+
+Sentence practice state is stored separately from word-study sessions so the two can coexist without overwriting each other.
+
+---
+
+# 54. Real-device mobile QA and Android Back behavior
+
+Actual phone use found several issues that static desktop inspection did not reveal:
+
+- a single Confirm button inherited a two-column action layout and appeared left-aligned,
+- sentence cards could create horizontal overflow on narrow widths,
+- the software keyboard could reduce viewport height enough to crowd the text field and sticky action,
+- Android Back could close the whole local viewer instead of the in-app bottom sheet.
+
+Fixes included full-width single actions, width constraints, short-viewport handling, and history-state integration for in-app overlays.
+
+A platform limitation remains important:
+
+> A local HTML viewer or browser host may intercept Android Back before JavaScript receives it.
+
+Therefore local direct-open support is preserved, but strict exit interception should not be treated as guaranteed until the app is hosted/PWA-wrapped or put inside a native/WebView shell.
+
+---
+
+# 55. Recall-graduation evidence was tightened
+
+Deep QA found that Recall graduation could be inflated by answers that were corrected after seeing failure feedback or by using Answer Reveal.
+
+That conflicted with the meaning of “15 successful recalls.”
+
+The corrected rule:
+
+> Recall graduation increments only when the French sentence is produced correctly on the **first attempt**, before revealing the answer.
+
+The session result model also distinguishes:
+
+- first-try correct,
+- corrected after error,
+- answer revealed.
+
+This preserves learning value without pretending all three are equivalent evidence.
+
+---
+
+# 56. v2.11.4 / v2.12 — from pattern cleanup to full semantic audit
+
+After several staged pattern families were removed, the user questioned why example work could not be completed in one larger pass.
+
+The distinction was clarified:
+
+- bad approach: replace every sentence matching a surface pattern automatically,
+- good approach: inspect the entire corpus, preserve good examples, replace only high-confidence problems.
+
+v2.11.4 first fixed 45 additional clear problems.
+
+v2.12.0 then audited all **2,866** cards and changed **583** high-confidence examples.
+
+The audit included target-word sense alignment, not just sentence style.
+
+The large-scale example cleanup phase is now considered substantially complete. Future example work should mainly be targeted QA found during actual study rather than perpetual bulk rewriting.
+
+---
+
+# 57. v2.13 — learner intent controls New-word exposure
+
+The existing adaptive algorithm could legitimately produce a Custom/Today stretch with zero New cards when review pressure was high.
+
+The user wanted explicit control because study intent changes by day:
+
+- sometimes learn new material,
+- sometimes clear reviews only,
+- sometimes let the engine decide.
+
+The resulting modes are:
+
+### Auto
+
+Keep adaptive behavior.
+
+### At least 25% New
+
+Ensure a meaningful New intake when New cards are available.
+
+For finite Custom Study, the quota is straightforward (20 targets → at least 5 New).
+
+For continuous Today Study, the target applies to card selection over time, not every visible interaction, because learning chains and retries are higher-priority pedagogical obligations.
+
+### Review only
+
+Do not introduce never-seen New cards.
+
+This is a product shift from a scheduler that only infers intent to one that combines **adaptive scheduling + explicit learner intent**.
+
+---
+
+# 58. Meaning failure now includes re-teaching, not only retry
+
+Another learning-design question arose: what should happen when the learner cannot answer a basic meaning-recognition question at all?
+
+A blind delayed retry is sometimes insufficient because the association was never successfully encoded.
+
+v2.13 adds:
+
+**wrong / 모르겠어요 → Relearn Meaning → delayed meaning retest**
+
+The re-teaching screen shows the French form, meaning, and pronunciation again.
+
+This is intentionally limited to meaning recognition rather than routing every listening/reverse error through the same flow.
+
+---
+
+# 59. Current product direction after v2.13
+
+The app has moved beyond a conventional vocabulary deck.
+
+Its strongest coherent direction is:
+
+**Recognition → Recall → Production**
+
+Current endpoints already exist:
+
+- recognition through meaning/listening,
+- reverse recall,
+- word spelling,
+- sentence Copy,
+- full sentence Recall.
+
+The largest missing bridge is a selective **cloze / progressive hint reduction** layer that removes support gradually instead of jumping directly from full sentence visibility to translation-only production.
+
+This should be designed carefully so typing remains retrieval practice rather than mechanical keyboard labor.
+
+---
+
+# 60. Current baseline
+
+Current application baseline:
+
+`TEF_Vocab_Loop_v2_13_0.html`
+
+Key current state:
+
+- 2,866 unique cards,
+- Korean/English bilingual display,
+- one shared learner record,
+- Smart Today + finite Custom,
+- selectable Auto / 25% New / Review-only intake,
+- Seen distinct from Learning,
+- skill-specific progress,
+- spelling reinforcement without mastery gating,
+- meaning relearn loop,
+- full example coverage with large semantic audit completed,
+- Sentence library + Copy/Recall study,
+- per-mode 15-repetition graduation,
+- separate resumable sentence practice,
+- IndexedDB/local persistence + JSON backup,
+- direct-open Android workflow still supported with known host-level Back limitations.
+
+Read this file together with `PROJECT_HANDOFF.md`, `CHANGELOG.md`, `QA_NOTES.md`, `ROADMAP_NEXT.md`, `NEW_SESSION_START_HERE.md`, and the latest QA report.

@@ -1,13 +1,13 @@
 # TEF Vocab Loop — PROJECT HANDOFF
 
-**Current baseline:** `TEF_Vocab_Loop_v2_7.html`  
+**Current baseline:** `TEF_Vocab_Loop_v2_13_0.html`  
 **Read first in a new session.** For the full reasoning/history, read `TEF_Vocab_Project_History.md`.
 
 ---
 
 ## 1. What this project is
 
-A Korean-user-focused French vocabulary learning app built as a single offline-friendly HTML file.
+A Korean/English bilingual French vocabulary learning app built as a single offline-friendly HTML file.
 
 Primary goals:
 
@@ -620,3 +620,168 @@ Removed major low-value families now include:
 Next recommended bulk pass:
 environment + news + religion + history generic frames.
 
+
+
+---
+
+## 35. v2.9.3 high-confidence example cleanup
+
+v2.9.3 completed the five explicitly queued template families from the v2.9.2 handoff:
+
+- `Ce cours porte sur ...` — 34
+- `Ce documentaire parle de/du ...` — 28
+- `Le journal parle de/du ...` — 24
+- `Ce livre parle de/du ...` — 26
+- `Le médecin parle de/du ...` — 32
+
+Total: 144 changed cards.
+
+French, Korean, and English examples were updated together. Card IDs, original meanings, and learner state stayed intact.
+
+---
+
+## 36. v2.10 sentence typing practice
+
+The Sentence tab evolved from a browsing library into a sentence-production training entry point.
+
+Two independent practice modes were added:
+
+- **Copy**: show French + translation and type the sentence while understanding it.
+- **Recall**: show only the translation and reconstruct the French sentence.
+
+Important answer-checking decisions:
+
+- initial capitalization does not cause failure,
+- final `. ! ?` does not cause failure,
+- accents, spelling, articles, prepositions, conjugation, and internal structure remain meaningful,
+- wrong portions are highlighted for correction.
+
+Per-sentence counts are stored separately for Copy and Recall.
+
+Graduation rule:
+
+- 15 completions in a mode = graduated in that mode,
+- Copy graduation and Recall graduation are independent,
+- graduated sentences are browsable in a separate graduation library.
+
+The Sentence tab remains a library/hub; actual typing practice runs on a separate study screen and has resumable session state independent from word-study sessions.
+
+---
+
+## 37. v2.11 mobile/back-navigation and sentence-practice hardening
+
+Real phone use drove several UI corrections:
+
+- Copy-mode Confirm button was expanded to full width when it is the only action.
+- Sentence page horizontal overflow was fixed across narrow mobile widths.
+- Keyboard-height cases were adjusted so the input and primary action do not overlap.
+- Word-detail bottom sheet uses history state so Android Back closes the sheet first when the browser delivers the event.
+- App-level accidental-exit protection was added for normal web navigation flows.
+
+Known platform limitation:
+
+`file://` / `content://` HTML viewers may consume Android Back before the page receives it. A future HTTPS/PWA or native/WebView wrapper is the stronger solution if strict exit interception is required.
+
+Recall-graduation semantics were also hardened:
+
+> A Recall repetition counts toward 15/15 only when the learner answers correctly on the first attempt before revealing the answer.
+
+Correct-after-edit and Answer-Revealed are still useful practice but do not inflate Recall graduation.
+
+Session results distinguish:
+
+- first-try correct,
+- correct after correction,
+- answer revealed.
+
+---
+
+## 38. v2.11.4 and v2.12 example-quality completion phase
+
+v2.11.4 changed 45 additional clearly low-value or incorrect examples.
+
+v2.12.0 then performed a **full-corpus audit of all 2,866 cards** and changed 583 high-confidence examples.
+
+The audit targeted:
+
+- repetitive boilerplate,
+- low-learning-value frames,
+- unnatural collocations,
+- target-word sense mismatches,
+- weak home/object/place/study/food/personality/travel/country/animal/profession templates.
+
+Examples of sense corrections include:
+
+- `arrêter`: bus-stopping sense → arrest sense matching the stored meaning,
+- `vers`: approximate-time sense → direction sense,
+- `responsable`: noun use → adjective construction,
+- `tendre`: verb use → adjective/personality use.
+
+Important content principle:
+
+Do not rewrite a sentence merely because it is simple. Number/ordinal/month examples and other simple sentences may be exactly appropriate for their card.
+
+The large template-cleanup phase is now substantially complete. Ongoing example QA should mostly be driven by real study and clear semantic issues.
+
+---
+
+## 39. v2.13 study-intent control
+
+The user wanted explicit control over whether a session introduces new vocabulary.
+
+Today now opens with three modes:
+
+- **Auto** — existing adaptive Smart logic,
+- **At least 25% New** — newly selected card mix maintains at least about 25% unintroduced New cards when available,
+- **Review only** — no unintroduced New cards.
+
+Custom Study has the same new-word-mix selector.
+
+For finite Custom Study, the 25% policy is concrete: e.g. 20 targets → at least 5 New when enough New cards exist.
+
+For continuous Today Study, the ratio applies to ongoing card selection rather than every visible interaction, because retries and learning-chain followups may temporarily dominate the screen.
+
+---
+
+## 40. v2.13 meaning-relearn loop
+
+A wrong or `모르겠어요` answer on a meaning question now triggers a support step before retry:
+
+1. fail/unknown meaning,
+2. show **Relearn Meaning** with French + meaning + pronunciation,
+3. learner confirms,
+4. meaning is retested after intervening questions.
+
+This applies specifically to meaning recognition. Listening/reverse errors are not all routed through the full introduction screen.
+
+The reason is pedagogical: if the learner genuinely does not know the meaning, repeating the same multiple-choice question without re-teaching the association is low-value.
+
+---
+
+## 41. Current baseline / do not regress
+
+Current baseline: `TEF_Vocab_Loop_v2_13_0.html`
+
+Additional current invariants:
+
+- Today has Auto / 25% New / Review-only intent control.
+- Custom has the same new-word-mix control.
+- Meaning failure can enter Relearn Meaning before delayed retest.
+- Sentence Copy and Recall histories are independent.
+- Recall graduation requires first-try unrevealed success.
+- Sentence practice has a separate resumable session.
+- v2.12 audited the full example corpus; future mass rewrites require a specific reason.
+- local-file Android Back interception is best-effort, not guaranteed by the browser host.
+
+Current highest-value future work:
+
+1. selective cloze / progressive hint reduction,
+2. multi-skill Weak,
+3. stronger Mastered spaced evidence,
+4. Weak / Hard / ★ separation,
+5. reverse ambiguity guard,
+6. distractor improvement,
+7. library filters/sorting/search,
+8. Recommended sentence curation,
+9. backup/migration robustness,
+10. later PWA/native/cloud packaging.

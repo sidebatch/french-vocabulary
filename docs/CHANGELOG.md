@@ -254,3 +254,73 @@ This changelog is intentionally concise. See `TEF_Vocab_Project_History.md` for 
 - Preserved 2,866 card IDs, source meanings, TTS, categories, and progress compatibility.
 - Added `EXAMPLE_UPGRADE_v2_9_2.tsv` for line-by-line auditing.
 
+
+
+## v2.9.3
+- Rewrote the remaining 144 high-confidence repetitive example families queued by v2.9.2.
+- Removed `Ce cours porte sur...`, documentary/news/book/doctor generic families targeted in the handoff.
+- Updated French, Korean, and English examples together.
+- Preserved card IDs, source meanings, and learner-state compatibility.
+
+## v2.10.0
+- Added sentence typing practice inside the Sentence feature.
+- Added two separate modes: Copy (French + translation visible) and Recall (translation only).
+- Kept sentence practice separate from word `spelling` skill progress.
+
+## v2.10.1
+- Sentence checking now ignores initial capitalization and final `. ! ?` differences.
+- Kept accents/spelling/grammar-sensitive differences strict.
+- Added red highlighting/comparison for wrong portions.
+
+## v2.10.2
+- Added per-sentence Copy and Recall practice counts.
+- Counts persist and do not remove a sentence from future random practice.
+- Improved mobile action placement so checking does not require unnecessary scrolling.
+
+## v2.10.3
+- Fixed Copy mode single Confirm action occupying only the left half of a two-column action grid.
+- Confirm now uses full width when it is the only action.
+
+## v2.10.4
+- Added independent 15-repetition graduation for Copy and Recall.
+- Added mode-specific graduated sentence library.
+- Added current-sentence `n/15` progress display.
+
+## v2.11.0
+- Moved sentence typing into a dedicated study screen instead of embedding the full exercise in the Sentence library.
+- Added resumable sentence-practice session state independent from word-study sessions.
+
+## v2.11.1
+- Integrated word-detail bottom sheet with browser history so Android Back can close the sheet when the host forwards the event.
+
+## v2.11.2
+- Added broader accidental-exit/back-navigation protection for normal browser navigation flows.
+- Preserved X/overlay close behavior for dialogs.
+- Documented local HTML viewer limitation: some hosts intercept Android Back before page JavaScript.
+
+## v2.11.3
+- Recall graduation now increments only for first-try correct answers before answer reveal.
+- Split sentence results into first-try correct / corrected / answer revealed.
+- Fixed Sentence-page mobile horizontal overflow.
+- Improved short-viewport/keyboard layout so input and primary action do not overlap.
+
+## v2.11.4
+- Rewrote 45 additional clearly low-value or incorrect examples.
+- Continued synchronized French/Korean/English example updates.
+
+## v2.12.0
+- Performed a full-corpus audit of all 2,866 example sentences.
+- Rewrote 583 high-confidence low-value, repetitive, unnatural, or sense-mismatched examples.
+- Corrected target-sense mismatches including `arrêter`, `vers`, `responsable`, and `tendre`.
+- Verified 2,866 cards, 2,866 English sidecar entries, unique IDs, valid `cf` references, and no empty FR/KO/EN examples.
+- Preserved original vocabulary meanings and non-example card fields.
+
+## v2.13.0
+- Added Today study-intent picker: Auto / At least 25% New / Review only.
+- Added the same New-word mix control to Custom Study.
+- Finite Custom `25% New` reserves at least one quarter of targets for unintroduced New cards when available.
+- Continuous Today `25% New` maintains New intake over ongoing selection while allowing retries/learning-chain tasks to take priority.
+- Review-only mode blocks unintroduced New cards.
+- Added Relearn Meaning flow after a wrong/unknown meaning answer before delayed meaning retest.
+- Bumped session schema to 3.
+- Preserved the 2,866-card corpus and v2.12.0 example content.

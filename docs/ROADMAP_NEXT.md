@@ -1,327 +1,154 @@
 # TEF Vocab Loop — Next Work Roadmap
 
-**Baseline:** v2.6  
-**Roadmap principle:** stop adding large surface features temporarily; strengthen learning correctness and long-term reliability first.
+**Baseline:** v2.13.0  
+**Roadmap principle:** strengthen the learning loop before adding social/account surface area.
 
 ---
 
-# Priority 0 — Protect user progress
+# Priority 0 — Protect user progress and release safety
 
-## P0.1 Upgrade procedure for direct HTML
-
-Until hosted on a stable origin:
-
-- export JSON before opening a new version,
-- keep previous stable HTML,
-- verify progress after upgrade,
-- import backup if necessary.
-
-## P0.2 Add backup health later
-
-- last-backup timestamp
-- gentle backup reminder
-- import schema validation
+- Export JSON before large local-file upgrades.
+- Keep the previous stable HTML snapshot.
+- Verify 2,866 cards / recent progress after GitHub deployment.
+- Improve import validation and explicit schema migration handling.
+- Consider last-backup timestamp / gentle backup reminder later.
 
 ---
 
-# Priority 1 — v2.7 Learning Engine Hardening
+# Priority 1 — Progressive sentence retrieval (highest learning-value feature)
 
-## 1. Today queue policy
+Current sentence endpoints:
 
-### Current issue
+- Copy: full French visible.
+- Recall: translation only; produce full French.
 
-Seen can consume the full review quota and starve overdue normal reviews.
+Missing bridge:
 
-### Proposed decision to discuss
+**progressive cloze / hint reduction**.
 
-Preferred default:
+Possible progression:
 
-**Weak due → overdue due → Seen → New**
+1. full sentence visible,
+2. one target chunk blank,
+3. several chunks blank,
+4. translation only,
+5. full sentence production.
 
-Alternative:
+Goal:
 
-reserve 25–40% of review capacity for Seen.
+- make typing retrieval practice rather than keyboard labor,
+- reduce support gradually,
+- reuse the improved example corpus,
+- avoid making every sentence unnecessarily exhausting.
 
-### Acceptance criteria
-
-- overdue review cannot be completely starved by a large Seen backlog,
-- Seen still continues promptly,
-- weak due items remain highest priority,
-- new words are last.
-
----
-
-## 2. Seen backlog controls new-word intake
-
-### Current issue
-
-`effectiveNewCount()` ignores Seen.
-
-### Acceptance criteria
-
-- high Seen backlog automatically reduces or pauses new words,
-- home text explains why new count was reduced.
+Do not automatically tie this to the current 15-count graduation until real-use behavior is tested.
 
 ---
 
-## 3. Multi-skill Weak
+# Priority 2 — Learning-engine evidence quality
 
-### Current issue
+## Multi-skill Weak
 
-one `weakSkill` string can be overwritten.
+Current architecture historically centered on one `weakSkill` slot.
+A card can realistically be weak in listening and reverse at the same time.
 
-### Target
+Target:
+- allow simultaneous weak skills,
+- recover each skill from appropriate evidence,
+- avoid one skill erasing another skill's weakness.
 
-Track Weak state separately for each core skill.
+## Mastered evidence
 
-### Acceptance criteria
+Strengthen spaced evidence so Mastered is not granted from stale/global evidence that does not represent all core skills well.
 
-- listening and reverse can both be weak,
-- recovering listening does not erase reverse weakness,
-- card is visibly Weak while any core skill remains weak.
+Spelling remains non-mandatory.
 
----
+## Weak / Hard / ★ separation
 
-## 4. Mastered evidence
+Keep meanings distinct:
 
-### Current issue
-
-one global `longReviewPassed` can be earned by one skill and later unlock Mastered for the whole card.
-
-### Target
-
-Use per-skill or post-Familiar spaced confirmation.
-
-### Acceptance criteria
-
-- Mastered cannot be unlocked by stale long-gap evidence from only one core skill,
-- spelling remains excluded from mandatory mastery.
+- Weak = current engine instability,
+- Hard = performance-based difficulty,
+- ★ = user-saved/manual importance.
 
 ---
 
-## 5. Weak / Hard / Star semantics
+# Priority 3 — Quiz fairness and quality
 
-Separate:
+## Reverse ambiguity guard
 
-- Weak = current engine state
-- Hard = difficult based on performance
-- ★ = user-saved
+Especially in English mode, one meaning can map to multiple valid French answers.
 
-### Acceptance criteria
+Examples of risk:
+- `number` → `le nombre` / `le numéro`
+- `about/regarding` → `au sujet de` / `à propos de`
+- `although` → `bien que` / `quoique`
 
-- “현재 약점” count means actual current Weak only,
-- starred words do not inflate Weak count,
-- Hard-focus session labels what it includes.
-
----
-
-## 6. Due order inside category balancing
-
-Keep category variety but sort each review bucket by due time.
-
-### Acceptance criteria
-
-- very overdue cards are not randomly pushed behind less-overdue cards solely because of balancing.
-
----
-
-## 7. Daily level scope
-
-Discuss/choose:
-
-- A1-A2
-- B1-B2
-- Both
-
-### Acceptance criteria
-
-Today new words respect the chosen scope.
-
----
-
-# Priority 2 — v2.8 Quiz Quality
-
-## 1. Reverse ambiguity guard
-
-Korean prompt must have a reasonably unique expected French answer.
-
-Reject distractors whose meanings overlap too strongly.
-
-For inherently ambiguous cards:
-
+Options:
 - add context,
-- use sentence/cloze,
-- or avoid reverse multiple choice.
+- avoid ambiguous reverse multiple choice,
+- accept multiple valid targets where structurally safe,
+- use sentence/cloze instead.
 
-## 2. Better distractor ranking
+## Better distractors
 
-Signals:
-
+Improve with:
 - same part of speech,
 - same category,
 - semantic closeness,
 - form similarity,
-- learner's past confusions,
+- learner confusion history,
 - ambiguity penalty.
 
-## 3. Spelling real-device test
+---
 
-Test:
+# Priority 4 — Word/Sentence library usability
 
-- accents
-- apostrophes
-- œ
-- Android IME
-- keyboard switching
-- autocorrect
+Word library:
+- status filters: New / Seen / Learning / Familiar / Mastered / Weak / ★ / review-needed,
+- sorting: A-Z / recent / due / weakest / source order,
+- accent-insensitive search,
+- optional local issue flag (`⚑ 검토 필요`).
 
-Only then decide whether to add special French-character buttons.
-
-## 4. Answer undo
-
-Investigate one-answer transactional undo for accidental taps.
-
-Do not implement by casually decrementing counters; snapshot/restore must be safe.
+Sentence library:
+- improve Recommended precision,
+- consider explicit curation fields/tags,
+- useful tags: collocation / verb+preposition / everyday / connective / TEF reusable / grammar construction.
 
 ---
 
-# Priority 3 — v2.9 Word Library / Content QA
+# Priority 5 — Real-use QA followups
 
-## Filters
-
-- New
-- Seen
-- Learning
-- Familiar
-- Mastered
-- Weak
-- Hard
-- ★
-- ⚑ Review needed
-
-## Sorting
-
-- A–Z
-- recently studied
-- next review
-- weakest
-- source order
-
-## Search
-
-Make accent-insensitive.
-
-## Local issue flagging
-
-Add `⚑ 검토 필요`.
-
-Reasons:
-
-- 뜻
-- 예문
-- 발음
-- 문제/보기
-- 기타
-
-This is strongly recommended because real studying can become ongoing QA.
+- confirm sentence-only study should/should not count toward streak/studyDays,
+- refine Back behavior for graduation library if still awkward,
+- review browser `beforeunload` vs intentional internal reload/navigation behavior,
+- continue individual example QA during actual study,
+- test v2.13.0 New-intake modes under realistic long sessions.
 
 ---
 
-# Priority 4 — v2.10 Sentence Library Quality
+# Priority 6 — Packaging / public release later
 
-Do not simply expand the number of Recommended items.
+After the learning engine and content loop are stable:
 
-Instead improve precision.
+- stable GitHub Pages / HTTPS deployment,
+- installable PWA,
+- Android WebView/native wrapper if strict Back/exit handling is needed,
+- login/cloud sync only if cross-device use justifies it,
+- rankings/social features only if they improve learning rather than distort it.
 
-## Proposed data fields
-
-- `sentenceRecommended`
-- `sentenceTags`
-- optional `sentenceValueScore`
-
-Possible tags:
-
-- collocation
-- verb+preposition
-- connective
-- argumentation
-- everyday pattern
-- TEF reusable
-- grammar construction
-
-## Known current scorer problems
-
-False-positive style:
-
-`La feuille tombe de l'arbre.`
-
-False-negative style:
-
-`Elle veut atteindre son objectif avant juin.`
-
-The latter contains a useful collocation but is currently excluded.
-
-## Goal
-
-Recommended should feel like a small reusable phrasebook, not merely a subset selected by numeric heuristics.
+Do not make account/social features the next priority.
 
 ---
 
-# Priority 5 — Reliability / Maintainability
+# Immediate recommended next step
 
-## Explicit schema migrations
+Use v2.13.0 in real study for a short period and observe:
 
-Separate:
+1. Is 25% New the right minimum?
+2. Does Review-only behave as expected?
+3. Does Relearn Meaning feel helpful or repetitive?
+4. At what Copy repetition count does copying become mechanical?
+5. How difficult is full Recall before 15 repetitions?
 
-- app version
-- data schema version
-- session schema version
-
-## Import validation
-
-Reject malformed backups cleanly.
-
-## Regression tests
-
-Automate at least:
-
-- New → Seen
-- Seen → Learning
-- Familiar
-- Mastered
-- two simultaneous Weak skills
-- Weak recovery
-- due-vs-Seen queue
-- Seen backlog new-word suppression
-- spelling exact/accent/wrong
-- session serialize/resume
-- category balance
-- 2,866 card integrity
-- TTS metadata
-
----
-
-# Priority 6 — Later packaging/public-release work
-
-Only after the learning engine is stable:
-
-- stable HTTPS deployment,
-- installable PWA if desired,
-- Android WebView/native wrapper if needed,
-- login/cloud sync only if the product genuinely needs it,
-- streak/ranking only if they improve motivation without distorting learning.
-
-Do not make authentication/ranking the next priority for the current personal app.
-
----
-
-# Suggested immediate next meeting
-
-Before coding v2.7, decide four product questions:
-
-1. Should overdue reviews be above Seen, or should Seen reserve part of the quota?
-2. Should Today study default to A1-A2, B1-B2, or a user-selected scope?
-3. What exactly should “Hard” mean compared with Weak and ★?
-4. How strict should Mastered be: all three core skills spaced, or one post-Familiar spaced confirmation?
-
-Once these four are decided, v2.7 can be implemented without guessing.
+Then design the cloze/hint-reduction layer from real evidence instead of guessing.

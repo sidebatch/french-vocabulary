@@ -301,3 +301,119 @@ Limit:
 - final touch/layout/TTS behavior still needs real Android testing.
 - English content needs ongoing semantic review during real use.
 
+
+
+---
+
+# v2.9.3 example QA
+
+Checked:
+- 144 targeted high-confidence repetitive examples changed.
+- French / Korean / English example IDs aligned.
+- card count remains 2,866.
+- stable IDs preserved.
+
+---
+
+# v2.10–v2.11 sentence-practice QA notes
+
+Key product checks:
+
+- Copy and Recall counts are independent.
+- practicing once does not permanently remove a sentence from random practice.
+- graduation threshold is 15 per mode.
+- Recall graduation counts only first-try correct before answer reveal.
+- initial capitalization and final `. ! ?` are ignored for sentence correctness.
+- accents and substantive spelling remain meaningful.
+- wrong portions are highlighted.
+- sentence practice has its own resumable session state.
+- Copy-only Confirm uses full width.
+- Sentence page no longer horizontally overflows at tested narrow mobile widths.
+- short viewport / keyboard layout avoids covering the input with the primary action.
+
+Real-device caveat:
+- Android Back behavior for local `file://` / `content://` viewers is host-dependent.
+
+---
+
+# v2.12.0 full example audit QA
+
+See `docs/example-audits/V2_12_0_EXAMPLE_AUDIT.md`.
+
+Passed:
+
+- total cards: 2,866
+- unique IDs: 2,866
+- English sidecar entries: 2,866
+- broken `cf` references: 0
+- empty French examples: 0
+- empty Korean examples: 0
+- empty English examples: 0
+- original Korean meaning changes: 0
+- English meaning changes: 0
+- non-example card-field changes: 0
+- changed FR IDs == changed KO IDs == changed EN IDs: yes (583)
+- JavaScript syntax: PASS
+
+This was a semantic audit, not a forced rewrite of every sentence.
+
+---
+
+# v2.13.0 study-mode / relearn QA
+
+Static/integrity checks:
+
+- JavaScript syntax: PASS
+- cards: 2,866
+- unique IDs: 2,866
+- A1-A2: 1,465
+- B1-B2: 1,401
+- v2.13 corpus/example fields equal v2.12.0 baseline: PASS
+- Today mode strings/control paths for Auto / 25% New / Review only present
+- Custom `newMix` selector present
+- Relearn Meaning UI/control path present
+- Session schema: 3
+
+Behavior that should receive real-use testing after deployment:
+
+1. Today 25%-New mode over long mixed sessions.
+2. Today Review-only never introducing a never-seen card.
+3. switching Today mode while a Smart session is already active.
+4. Custom 20/30/50 target mixes with insufficient vs sufficient New supply.
+5. meaning wrong / `모르겠어요` → Relearn Meaning → delayed retest.
+6. backup/import across session schema 3.
+
+---
+
+# Current regression checklist — v2.13.0
+
+Before shipping a future version, verify at minimum:
+
+1. JavaScript syntax passes.
+2. Card count remains 2,866 unless an intentional migration is documented.
+3. Card IDs remain stable.
+4. English sidecar still covers all 2,866 IDs.
+5. Existing progress storage loads.
+6. New cards are never tested before introduction.
+7. `확인했어요` introduction alone => Seen, not Learning.
+8. Spelling does not gate mastery.
+9. Failed meaning can reach Relearn Meaning and delayed retest.
+10. Today Auto / 25% New / Review-only remain distinct.
+11. Custom new-word mix remains distinct from focus skill mode.
+12. Review-only never introduces New.
+13. 25%-New Custom reaches quota when sufficient New cards exist.
+14. Word audio does not speak grammar metadata.
+15. Example audio still works.
+16. Word audio controls remain outside the white example card.
+17. Whole-topic study remains category-balanced.
+18. Previous-introduction replay does not mutate state.
+19. Word-study active session can resume.
+20. Sentence practice session can resume independently.
+21. Sentence Copy/Recall counts remain independent.
+22. Recall graduation increments only on first-try unrevealed success.
+23. Graduated sentence libraries remain mode-specific.
+24. Sentence typing mobile layout has no horizontal overflow.
+25. Sentence keyboard viewport keeps input/action usable.
+26. Sentence Recommended/All modes still render.
+27. FR/KO/EN examples remain synchronized after content edits.
+28. direct-open Android remains viable, while Back interception is treated as best-effort.
