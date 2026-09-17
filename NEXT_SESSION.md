@@ -1,6 +1,6 @@
 # NEXT SESSION
 
-Current baseline: **TEF Vocab Loop v2.9.2**
+Current baseline: **TEF Vocab Loop v2.13.0**
 
 Read first:
 1. `NEW_SESSION_START_HERE.md`
@@ -8,39 +8,60 @@ Read first:
 3. `docs/TEF_Vocab_Project_History.md`
 4. `docs/CHANGELOG.md`
 5. `docs/QA_NOTES.md`
-6. `docs/reports/V2_9_2_EXAMPLE_QA_REPORT.md`
-7. `index.html`
+6. `docs/ROADMAP_NEXT.md`
+7. `docs/reports/V2_13_0_QA_REPORT.md`
+8. `docs/example-audits/V2_12_0_EXAMPLE_AUDIT.md`
+9. `index.html`
 
-## Immediate active project
+## Current product state
 
-Continue the **Example Quality Upgrade**.
+- 2,866 stable cards.
+- Korean/English bilingual display with one shared learner record.
+- Today = continuous Smart Session.
+- Today modes: Auto / At least 25% New / Review only.
+- Custom Study is finite and now also has new-word mix selection.
+- New cards are introduced before testing.
+- Failed/unknown meaning questions go through a Relearn Meaning screen before delayed retest.
+- Sentence practice has two independent modes: Copy and Recall.
+- Each sentence/mode tracks repetitions independently; 15 = graduated.
+- Recall graduation increases only for first-try success before answer reveal.
+- Sentence practice is a separate resumable study screen.
+- v2.12.0 completed a full 2,866-example audit and changed 583 high-confidence examples.
 
-Cumulative rewrites: **612 / 2,866**.
+## Product direction
 
-Next high-confidence repetitive families in v2.9.2:
+Do not add features merely to increase feature count.
+The long-term learning direction is:
 
-- `Ce cours porte sur ...` — 34
-- `Ce documentaire parle de/du ...` — 28
-- `Le journal parle de/du ...` — 24
-- `Ce livre parle de/du ...` — 26
-- `Le médecin parle de/du ...` — 32
+**Recognition → Recall → Production**
 
-Total: **144**.
-
-For every changed example, update French + Korean + English together.
-
-Do not mass-regenerate all 2,866 examples. Preserve already-good examples.
-
-After obvious template families are cleaned, switch to semantic review for individually low-value examples.
+The strongest next learning feature candidate is a selective cloze / hint-reduction step between copy typing and full sentence recall.
 
 ## Critical invariants
 
-- 2,866 stable cards.
-- One shared learner progress for Korean/English modes.
+- Preserve 2,866 stable card identities.
 - Seen ≠ Learning.
+- Meaning, listening, reverse, and spelling remain independent.
 - Spelling is reinforcement, not mandatory for mastery.
-- Today = continuous Smart Session, no fixed daily quota.
-- Custom Study = finite, but shares global progress.
-- Calendar current-day class is `isToday`, not generic `today`.
-- Keep word-audio controls outside the white example card.
-- Keep original source meanings unless the user explicitly asks to revise them.
+- Today and Custom share one global card progress record.
+- New cards must be introduced before testing.
+- Failed items should not be immediately echoed; delayed retry remains important.
+- Word audio and example audio remain visually separated.
+- TTS must not read grammar metadata.
+- Sentence Copy and Recall counts remain independent.
+- Recall 15/15 must mean genuine first-try recall, not corrected/revealed answers.
+- Original vocabulary meanings must not be casually rewritten during example QA.
+- French/Korean/English example translations must stay synchronized when an example changes.
+
+## High-value next work
+
+1. Real-use testing of v2.13.0 Smart new-word modes.
+2. Partial cloze / progressive hint reduction design.
+3. Multi-skill Weak model.
+4. Mastered evidence hardening.
+5. Weak / Hard / ★ semantic separation.
+6. Reverse ambiguity guard, especially English mode.
+7. Better distractors.
+8. Word-library filters/sorting/search improvements.
+9. Sentence Recommended curation precision.
+10. Later packaging: PWA / Android wrapper / cloud sync if needed.
