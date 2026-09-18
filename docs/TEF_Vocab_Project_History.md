@@ -2,7 +2,7 @@
 
 **Document purpose:** preserve the project’s memory so a future developer or a new GPT session can continue the app without losing small design intentions, user feedback, learning-engine philosophy, or reasons behind seemingly minor UI choices.
 
-**Documented baseline:** `TEF_Vocab_Loop_v2_13_0.html`  
+**Documented baseline:** `TEF_Vocab_Loop_v2_13_4.html`  
 **Vocabulary corpus:** 2,866 unique study cards  
 **Primary use case:** a Korean-speaking learner studying French vocabulary for practical use and TEF-oriented progression, especially through short, repeatable mobile study sessions.  
 **Primary device/workflow:** Android phone and laptop; a downloaded single HTML file that can be opened directly is intentionally acceptable.
@@ -1968,3 +1968,112 @@ Key current state:
 - direct-open Android workflow still supported with known host-level Back limitations.
 
 Read this file together with `PROJECT_HANDOFF.md`, `CHANGELOG.md`, `QA_NOTES.md`, `ROADMAP_NEXT.md`, `NEW_SESSION_START_HERE.md`, and the latest QA report.
+
+
+---
+
+# 61. v2.13.1 — real-study ambiguity became a QA input
+
+The learner encountered two concrete problems during real use:
+1. a source meaning that did not match the obvious French word;
+2. a multiple-choice question where more than one Korean answer was defensible.
+
+This established a stronger QA rule:
+
+> A distractor is only useful if it is wrong for the tested sense. Difficulty must not come from semantic ambiguity.
+
+v2.13.1 combined 29 high-confidence meaning/notation corrections with targeted ambiguity guards.
+
+---
+
+# 62. v2.13.2 — exit protection distinguishes user exit from app navigation
+
+Accidental-exit protection used `beforeunload`.
+An internal action intentionally called `location.reload()`, causing Chrome to show its native reload-warning prompt.
+
+Architecture decision:
+
+> Internal intentional reload is trusted only after persistence and should bypass the unload warning. Genuine browser leaving/reload should remain protected.
+
+---
+
+# 63. v2.13.3 — the streak calendar becomes a study-history surface
+
+The learner wanted to tap a studied date and see how much work was done that day.
+
+The pre-existing model stored only `studyDays[date] = true`, which cannot reconstruct historical volume.
+
+The app therefore added `dailyStats` for future dates rather than fabricating old values.
+
+Recorded from v2.13.3 onward:
+- word questions
+- New learning count
+- correct / wrong
+- accuracy
+- sentence Copy activity
+- sentence Recall activity
+
+Critical data-integrity rule:
+
+> Do not infer exact historical daily totals from cumulative attempts or last-attempt timestamps.
+
+---
+
+# 64. Full Custom Study QA exposed focus-semantics mismatch
+
+A broad QA covered level, topic, size, focus, New-word composition, and their combinations.
+A simulation/static pass exercised 5,700 synthetic combinations.
+
+Selection behavior was broadly sound, but deeper findings appeared:
+- Meaning focus could unexpectedly insert Listening/Reverse/Spelling after the first meaning success.
+- Spelling focus could select ineligible forms and silently fall back.
+- finite-session logical delay can collapse when there is no currently available task.
+- Level=All has duplicated semantic topics because raw source categories differ by level.
+- requested 20/30/50 size can exceed narrow-scope availability.
+- Review-only empty state is generic.
+
+---
+
+# 65. v2.13.4 — focus mode becomes an actual contract
+
+A key architecture clarification:
+
+> Session completion and card mastery are different things.
+
+A Meaning-focused Custom session can finish its target after meaning practice without pretending Listening or Reverse were learned.
+
+v2.13.4 defines Custom focus as:
+- Meaning: introduction → meaning → delayed meaning confirmation
+- Listening: introduction → meaning foundation → listening
+- Reverse: introduction → meaning foundation → reverse
+- Spelling: introduction → meaning foundation → spelling
+- Auto mix: existing adaptive secondary selection
+
+Meaning-only success advances only meaning evidence.
+Spelling focus now filters the candidate pool through the existing simple-form eligibility rule.
+
+---
+
+# 66. Current baseline after v2.13.4
+
+Current application baseline:
+
+`TEF_Vocab_Loop_v2_13_4.html`
+
+Key state:
+- 2,866 stable cards
+- Korean/English bilingual UI/content
+- one shared learner record
+- Today Smart Session
+- finite Custom Study
+- Auto / New25 / Review-only New intake controls
+- Meaning Relearn flow
+- ambiguity-guarded distractors
+- date-level daily stats from v2.13.3 onward
+- focus-mode contract defined in v2.13.4
+- Spelling focus restricted to eligible forms
+- sentence Copy/Recall with independent 15-count graduation
+- GitHub Pages + Chrome treated as primary deployment runtime
+
+Highest-priority open engine work:
+finite Custom session must preserve **real intervening interactions** before delayed follow-up/retry even when its pending queue has no immediately available task.
