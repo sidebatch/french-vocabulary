@@ -2,9 +2,9 @@
 
 ## 현재 기준 버전
 
-**TEF Vocab Loop v2.13.0**
+**TEF Vocab Loop v2.13.4**
 
-새 세션에서는 `index.html` 또는 `TEF_Vocab_Loop_v2_13_0.html`을 최신 기준으로 사용한다.
+새 세션에서는 `index.html` 또는 `TEF_Vocab_Loop_v2_13_4.html`을 최신 기준으로 사용한다.
 
 현재 핵심 데이터:
 
@@ -292,7 +292,7 @@ Sentence:
 GitHub 저장소 권장 구조:
 
 - `index.html` — GitHub Pages 최신 앱
-- `TEF_Vocab_Loop_v2_13_0.html` — 현재 스냅샷
+- `TEF_Vocab_Loop_v2_13_4.html` — 현재 스냅샷
 - `NEW_SESSION_START_HERE.md`
 - `NEXT_SESSION.md`
 - `docs/PROJECT_HANDOFF.md`
@@ -334,4 +334,55 @@ GitHub 저장소 권장 구조:
 7. 최신 QA / example audit
 8. `index.html`
 
-새 세션에서는 **v2.13.0을 기준으로 기존 product decisions를 보존**한다.
+새 세션에서는 **v2.13.4를 기준으로 기존 product decisions를 보존**한다.
+
+
+---
+
+## v2.13.1–v2.13.4 recent updates
+
+### v2.13.1 — meaning / distractor QA
+- Corrected 29 high-confidence meaning or grammar-notation issues found during real study.
+- Added ambiguity guards so meaning/listening/reverse multiple-choice distractors do not present multiple defensible answers.
+- Card IDs and examples remained stable.
+
+### v2.13.2 — intentional reload
+- Fixed Chrome's native `Reload site?` warning during app-owned reloads.
+- Internal reloads bypass `beforeunload` only after state is saved.
+- Genuine browser exit/reload protection remains.
+
+### v2.13.3 — calendar daily detail
+Studied dates became clickable and `dailyStats` was added.
+
+From v2.13.3 onward, per-day detail can include:
+- word questions
+- new words
+- correct / wrong
+- accuracy
+- sentence Copy
+- sentence Recall
+
+Older studied dates remain visible, but exact historical counts are not fabricated because older builds did not store them.
+
+### v2.13.4 — Custom focus semantics
+Custom focus now behaves as an actual focus contract:
+
+- Meaning: introduction → meaning → delayed meaning confirmation
+- Listening: introduction → meaning foundation → listening
+- Reverse: introduction → meaning foundation → reverse
+- Spelling: introduction → meaning foundation → spelling
+- Auto mix: existing adaptive behavior
+
+A Meaning-focused session advances meaning evidence only. It does not pretend Listening/Reverse were learned.
+
+Spelling focus filters candidates through the existing simple-form eligibility rule instead of silently falling back to another skill.
+
+## Highest-priority open QA
+1. finite Custom session delayed tasks can lose real intervening-question spacing when no current task is available;
+2. equivalent A1/B1 topic names should be canonicalized under Level = All;
+3. requested size can exceed the available candidate pool in narrow scopes;
+4. Review-only empty-state wording is still generic.
+
+See:
+- `docs/reports/V2_13_3_CUSTOM_STUDY_QA.md`
+- `docs/reports/V2_13_4_QA_REPORT.md`
