@@ -2,19 +2,18 @@
 
 개인용 **TEF Canada 프랑스어 어휘 학습 앱**입니다.
 
-현재 기준 버전: **v2.13.0**
+현재 기준 버전: **v2.13.4**
 
-앱은 single-file HTML 구조이며, `index.html` 하나만으로 실행됩니다.
+앱은 single-file HTML 구조이며, GitHub Pages에서는 `index.html`이 최신 실행 파일입니다.
 
 ## 주요 기능
 
-- A1–B2 프랑스어 단어 2,866개
+- A1–B2 프랑스어 단어 **2,866개**
 - 한국어 / 영어 학습 모드
-- 뜻 / 듣기 / 역방향 / 철자 학습
-- New / Seen / Learning / Familiar / Mastered / Weak 상태 추적
-- 간격 반복 복습
-- 오늘 학습 Smart Session
-- 오늘 학습 모드
+- 뜻 / 듣기 / 역방향 / 철자 스킬 추적
+- New / Seen / Learning / Familiar / Mastered / Weak 상태
+- 간격 반복 복습과 delayed retry
+- Today Smart Session
   - 자동
   - 새 단어 최소 25%
   - 복습만
@@ -24,42 +23,54 @@
   - 단어 수
   - 집중 방식
   - 새 단어 구성
-- 뜻 문제 오답 시 `뜻 다시 익히기` 단계
-- 단어 상세 학습 기록
+- 뜻 오답 시 `뜻 다시 익히기 → delayed retest`
+- 단어 라이브러리 + 상세 학습 기록
 - 문장 라이브러리
-- 문장 따라쓰기 / 뜻 보고 쓰기
-- 문장별 15회 졸업 시스템
+- 보고 따라쓰기 / 뜻 보고 쓰기
+- 문장별·모드별 15회 졸업
 - 프랑스어 단어 / 예문 TTS
-- 학습 캘린더
+- 학습 캘린더 + 날짜별 상세 학습량 기록
 - JSON 학습 기록 백업 / 복원
 
-## 현재 버전에서 중요한 변경
+## v2.13.x 주요 변경
+
+### v2.13.4
+- 맞춤 학습의 `집중 방식` 의미를 실제 출제와 일치시킴.
+- 뜻: 소개 → 뜻 → delayed 뜻 재확인.
+- 듣기: 소개 → 기본 뜻 확인 → 듣기.
+- 역방향: 소개 → 기본 뜻 확인 → 역방향.
+- 철자: 소개 → 기본 뜻 확인 → 철자.
+- 자동 혼합은 기존 adaptive secondary 로직 유지.
+- 철자 집중에서는 철자 가능한 카드만 후보로 사용.
+
+### v2.13.3
+- 학습 캘린더의 학습한 날짜를 눌러 상세 기록을 볼 수 있도록 추가.
+- v2.13.3 이후 날짜별로 단어 문제 수, 새 단어 수, 정답률, 문장 연습량 등을 저장.
+- 기존 날짜는 과거 버전에 상세 통계가 없었기 때문에 학습 여부만 보존.
+
+### v2.13.2
+- 앱 내부의 의도적인 `location.reload()`가 `beforeunload` 보호와 충돌해 Chrome의 `Reload site?` 경고가 뜨던 문제 수정.
+- 실제 브라우저 이탈 보호는 유지.
+
+### v2.13.1
+- 뜻/문법 표기 29개 고확신 수정.
+- 객관식 distractor ambiguity guard 강화.
+- `la brosse à dents`, `au lieu de + inf` 등 실제 학습 중 발견된 문제 수정.
 
 ### v2.13.0
-
-- 오늘 학습에서 학습 구성을 직접 선택할 수 있도록 변경
-  - 자동
-  - 새 단어 최소 25%
-  - 복습만
-- 맞춤 학습에도 새 단어 구성 옵션 추가
-- 뜻 문제를 틀리거나 `모르겠어요`를 선택하면
-  `뜻 다시 익히기 → 일정 간격 후 뜻 재시험` 흐름 추가
-
-### v2.12.0
-
-- 전체 2,866개 예문 품질 감사
-- 학습 가치가 낮거나 의미가 어긋난 예문 583개 수정
-- 프랑스어 / 한국어 / 영어 예문 동기화
-- 카드 ID와 학습 진행 구조 유지
+- Today와 Custom에 Auto / 새 단어 최소 25% / 복습만 추가.
+- 뜻 문제 오답·모르겠어요에 Relearn Meaning 단계 추가.
 
 ## 파일 구조
 
 ```text
 index.html
-TEF_Vocab_Loop_v2_13_0.html
+TEF_Vocab_Loop_v2_13_4.html
+README.md
+GITHUB_UPDATE_README.md
 NEW_SESSION_START_HERE.md
 NEXT_SESSION.md
-README.md
+PROJECT_STATUS.md
 archive/
 docs/
   PROJECT_HANDOFF.md
@@ -71,57 +82,59 @@ docs/
   example-audits/
 ```
 
-- `index.html` — GitHub Pages에서 실행되는 최신 앱
-- `TEF_Vocab_Loop_v2_13_0.html` — 현재 버전 스냅샷
-- `NEW_SESSION_START_HERE.md` — 새 개발 세션 시작용 요약
-- `NEXT_SESSION.md` — 다음 작업 시작점
-- `docs/PROJECT_HANDOFF.md` — 프로젝트 핵심 규칙과 현재 구조
-- `docs/TEF_Vocab_Project_History.md` — 전체 개발 이력과 결정 배경
-- `docs/CHANGELOG.md` — 버전별 변경사항
-- `docs/QA_NOTES.md` — QA 기록
-- `docs/ROADMAP_NEXT.md` — 앞으로의 개발 방향
-
 ## 중요한 프로젝트 원칙
 
-- 카드 수는 **2,866개**를 유지
-- 카드 ID는 임의로 변경하지 않음
-- `Seen`은 `Learning`과 다름
-- 새 단어는 소개 전에 문제로 출제하지 않음
-- 오답은 즉시 반복하지 않고 몇 문제 뒤 다시 출제
-- 철자는 강화 학습이며 Mastered의 필수 조건이 아님
-- 오늘 학습은 고정 일일 quota가 없는 continuous Smart Session
-- 맞춤 학습과 오늘 학습은 하나의 글로벌 학습 기록을 공유
-- 예문을 수정할 때는 프랑스어 / 한국어 / 영어를 함께 맞춤
-- 이미 좋은 예문은 불필요하게 다시 수정하지 않음
+- 카드 수는 **2,866개**를 유지한다.
+- 카드 ID는 임의로 바꾸지 않는다.
+- `Seen`은 `Learning`이 아니다.
+- 새 단어는 소개 전에 문제로 출제하지 않는다.
+- 오답은 즉시 반복하지 않고 delayed retry를 사용한다.
+- 뜻/듣기/역방향/철자는 각각 독립된 증거다.
+- 철자는 강화 학습이며 Mastered의 필수 조건이 아니다.
+- Today와 Custom은 서로 다른 세션이지만 하나의 global learner record를 공유한다.
+- 예문 수정 시 French / Korean / English를 함께 동기화한다.
+- 이미 좋은 예문은 불필요하게 다시 수정하지 않는다.
 
-## 학습 데이터
+## 집중 방식 규칙 — v2.13.4
+
+맞춤 학습에서 `집중 방식`은 실제 문제 유형을 의미합니다.
+
+- `뜻`: New/Seen도 secondary를 자동 Listening/Reverse로 보내지 않고 뜻을 다시 확인
+- `듣기`: 뜻 기반을 먼저 만든 후 Listening으로 진행
+- `역방향`: 뜻 기반을 먼저 만든 후 Reverse로 진행
+- `철자`: 뜻 기반을 먼저 만든 후 Spelling으로 진행하며, 철자 불가 카드는 세션 후보에서 제외
+- `자동 혼합`: 기존 adaptive algorithm 유지
+
+뜻을 여러 번 맞혀도 듣기/역방향 스킬까지 학습한 것으로 간주하지 않습니다.
+
+## 학습 캘린더
+
+`studyDays`는 학습 날짜 자체를 보존합니다.
+
+v2.13.3부터는 별도 `dailyStats`에 날짜별 상세 통계를 함께 저장합니다.
+
+기존 과거 날짜는 이전 버전에서 상세량을 기록하지 않았으므로 정확한 문제 수/정답률을 소급 복원하지 않습니다.
+
+## 저장 / 배포
 
 학습 진행도는 브라우저 저장소에 저장됩니다.
 
-HTML 파일을 업데이트해도 같은 GitHub Pages 주소를 계속 사용하는 경우
-기존 진행 기록은 일반적으로 유지됩니다.
+같은 GitHub Pages origin에서 `index.html`만 업데이트하면 기존 학습 진행도는 일반적으로 유지됩니다.
 
-다만 다른 origin으로 이동하거나 로컬 HTML(`file://`)과 GitHub Pages(`https://`) 사이를 이동하면
-진행도가 자동으로 이어지지 않을 수 있으므로 JSON 백업을 권장합니다.
+`file://` 로컬 HTML과 `https://` GitHub Pages는 서로 다른 저장 공간이므로, 환경을 옮길 때는 JSON 백업/복원을 권장합니다.
 
-## 개발 방향
+일반 Android HTML Viewer는 JavaScript/history/touch 이벤트 지원이 불완전할 수 있습니다. 현재 실제 배포 기준은 **GitHub Pages + Chrome**입니다.
 
-현재 핵심 방향은 단순한 단어 암기보다:
+## 현재 다음 우선 QA
 
-**단어 → 표현 → 문장 → 직접 생성**
+최근 맞춤 학습 전체 QA에서 남아 있는 주요 후보:
 
-으로 발전시키는 것입니다.
-
-다음 주요 후보:
-
-- 문장 부분 빈칸 학습
-- 힌트 감소 방식
-- 빈칸 → 전체 문장 생성
-- Multi-skill Weak 개선
-- Mastered 판정 근거 강화
-- 역방향 문제 의미 중복 방지
-- 오답 보기 품질 개선
+1. finite Custom session에서 delayed task 사이의 **실제 intervening interaction 수 보장**
+2. Level = All에서 A1/B1의 같은 의미 주제를 canonical topic으로 통합
+3. 선택한 20/30/50보다 실제 후보 카드가 적을 때 UX 개선
+4. Review-only 범위가 비었을 때 더 구체적인 안내
+5. 이후 문장 cloze / progressive hint reduction 설계
 
 ---
 
-Current baseline: **TEF Vocab Loop v2.13.0**
+Current baseline: **TEF Vocab Loop v2.13.4**
