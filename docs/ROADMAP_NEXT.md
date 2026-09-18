@@ -1,154 +1,97 @@
-# TEF Vocab Loop — Next Work Roadmap
+# TEF Vocab Loop — ROADMAP NEXT
 
-**Baseline:** v2.13.0  
-**Roadmap principle:** strengthen the learning loop before adding social/account surface area.
+**Current baseline:** v2.13.4
 
----
+The product direction remains:
 
-# Priority 0 — Protect user progress and release safety
+**Recognition → Recall → Production**
 
-- Export JSON before large local-file upgrades.
-- Keep the previous stable HTML snapshot.
-- Verify 2,866 cards / recent progress after GitHub deployment.
-- Improve import validation and explicit schema migration handling.
-- Consider last-backup timestamp / gentle backup reminder later.
+Do not prioritize feature count over learning value or reliability.
 
----
+## Priority 1 — finite Custom spacing hardening
 
-# Priority 1 — Progressive sentence retrieval (highest learning-value feature)
+The most important open QA item is the finite-session queue behavior.
 
-Current sentence endpoints:
-
-- Copy: full French visible.
-- Recall: translation only; produce full French.
-
-Missing bridge:
-
-**progressive cloze / hint reduction**.
-
-Possible progression:
-
-1. full sentence visible,
-2. one target chunk blank,
-3. several chunks blank,
-4. translation only,
-5. full sentence production.
+Current issue:
+when no task is currently available, the finite selector can take the earliest future task and effectively advance logical turn time. That can reduce the number of **real intervening learner interactions** before:
+- a new-word meaning test,
+- a delayed retry,
+- a follow-up confirmation.
 
 Goal:
+preserve the existing “several questions later” learning principle in finite Custom sessions, not just in logical turn numbers.
 
-- make typing retrieval practice rather than keyboard labor,
-- reduce support gradually,
-- reuse the improved example corpus,
-- avoid making every sentence unnecessarily exhausting.
+Do not solve this with immediate duplicate questions or meaningless filler.
 
-Do not automatically tie this to the current 15-count graduation until real-use behavior is tested.
+## Priority 2 — canonical topic grouping for Level = All
 
----
+Equivalent source categories currently appear separately under Level = All, for example:
 
-# Priority 2 — Learning-engine evidence quality
+- `LES VERBES` / `Les verbes`
+- `ADJECTIFS` / `L’adjectif`
+- `PRÉPOSITIONS` / `Les prépositions`
+- `L’ENDROIT` / `L’endroit`
+- `LA PROFESSION` / `La profession`
+- `OBJETS` / `L’objet`
 
-## Multi-skill Weak
+Preferred solution:
+add a canonical grouping layer for selection/display while preserving the underlying source category strings.
 
-Current architecture historically centered on one `weakSkill` slot.
-A card can realistically be weak in listening and reverse at the same time.
+## Priority 3 — available-count-aware session size
 
-Target:
-- allow simultaneous weak skills,
-- recover each skill from appropriate evidence,
-- avoid one skill erasing another skill's weakness.
+Narrow scopes may contain fewer than 20/30/50 eligible cards.
 
-## Mastered evidence
+Improve setup UX so target size does not silently shrink.
 
-Strengthen spaced evidence so Mastered is not granted from stale/global evidence that does not represent all core skills well.
+Possible directions:
+- show `사용 가능 N개`
+- disable impossible sizes
+- or show the effective target before start
 
-Spelling remains non-mandatory.
+Spelling-focus availability must be calculated **after** spelling eligibility filtering.
 
-## Weak / Hard / ★ separation
+## Priority 4 — small Custom Study UX cleanup
 
-Keep meanings distinct:
+- Review-only empty state should explicitly say there are no review cards in the selected scope.
+- Keep setup visually light.
+- Do not overload the screen with pre-session statistics unless they directly help the choice.
 
-- Weak = current engine instability,
-- Hard = performance-based difficulty,
-- ★ = user-saved/manual importance.
+## Priority 5 — progressive sentence recall
 
----
+After Custom Study hardening, the strongest learning-feature candidate is the missing bridge between Copy and full Recall:
 
-# Priority 3 — Quiz fairness and quality
+1. full sentence visible
+2. one target chunk blank
+3. several chunks blank
+4. translation + reduced cue
+5. full production
 
-## Reverse ambiguity guard
+Typing should remain retrieval practice, not mechanical keyboard labor.
 
-Especially in English mode, one meaning can map to multiple valid French answers.
+## Later architecture items
 
-Examples of risk:
-- `number` → `le nombre` / `le numéro`
-- `about/regarding` → `au sujet de` / `à propos de`
-- `although` → `bien que` / `quoique`
+- multi-skill Weak representation
+- stronger Mastered evidence
+- clearer Weak / Hard / ★ semantics
+- better distractors while preserving ambiguity safety
+- sentence Recommended curation precision
+- PWA / Android wrapper if stronger native-back/offline behavior becomes necessary
+- optional sync/login only when cross-device progress justifies the complexity
 
-Options:
-- add context,
-- avoid ambiguous reverse multiple choice,
-- accept multiple valid targets where structurally safe,
-- use sentence/cloze instead.
+## Explicitly not a priority
 
-## Better distractors
+- ranking/social features
+- arbitrary gamification
+- changing already-good examples just to make them different
+- weak third-party HTML-viewer compatibility at the cost of Chrome/GitHub Pages stability
 
-Improve with:
-- same part of speech,
-- same category,
-- semantic closeness,
-- form similarity,
-- learner confusion history,
-- ambiguity penalty.
+## Current stable focus behavior — v2.13.4
 
----
+- Meaning = meaning → delayed meaning confirmation
+- Listening = meaning foundation → listening
+- Reverse = meaning foundation → reverse
+- Spelling = meaning foundation → spelling
+- Auto mix = adaptive
+- Spelling target pool excludes ineligible forms
 
-# Priority 4 — Word/Sentence library usability
-
-Word library:
-- status filters: New / Seen / Learning / Familiar / Mastered / Weak / ★ / review-needed,
-- sorting: A-Z / recent / due / weakest / source order,
-- accent-insensitive search,
-- optional local issue flag (`⚑ 검토 필요`).
-
-Sentence library:
-- improve Recommended precision,
-- consider explicit curation fields/tags,
-- useful tags: collocation / verb+preposition / everyday / connective / TEF reusable / grammar construction.
-
----
-
-# Priority 5 — Real-use QA followups
-
-- confirm sentence-only study should/should not count toward streak/studyDays,
-- refine Back behavior for graduation library if still awkward,
-- review browser `beforeunload` vs intentional internal reload/navigation behavior,
-- continue individual example QA during actual study,
-- test v2.13.0 New-intake modes under realistic long sessions.
-
----
-
-# Priority 6 — Packaging / public release later
-
-After the learning engine and content loop are stable:
-
-- stable GitHub Pages / HTTPS deployment,
-- installable PWA,
-- Android WebView/native wrapper if strict Back/exit handling is needed,
-- login/cloud sync only if cross-device use justifies it,
-- rankings/social features only if they improve learning rather than distort it.
-
-Do not make account/social features the next priority.
-
----
-
-# Immediate recommended next step
-
-Use v2.13.0 in real study for a short period and observe:
-
-1. Is 25% New the right minimum?
-2. Does Review-only behave as expected?
-3. Does Relearn Meaning feel helpful or repetitive?
-4. At what Copy repetition count does copying become mechanical?
-5. How difficult is full Recall before 15 repetitions?
-
-Then design the cloze/hint-reduction layer from real evidence instead of guessing.
+Do not regress this behavior while fixing finite-session spacing.
