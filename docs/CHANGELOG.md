@@ -324,3 +324,32 @@ This changelog is intentionally concise. See `TEF_Vocab_Project_History.md` for 
 - Added Relearn Meaning flow after a wrong/unknown meaning answer before delayed meaning retest.
 - Bumped session schema to 3.
 - Preserved the 2,866-card corpus and v2.12.0 example content.
+
+
+## v2.13.1
+- Ran targeted meaning/grammar-notation QA after real-study screenshots exposed ambiguous and incorrect answer content.
+- Corrected 29 high-confidence meaning/notation issues without changing card IDs.
+- Added distractor ambiguity guards for overlapping/synonymous pairs in meaning/listening/reverse multiple choice.
+- Preserved distinct close-confusable cases.
+
+## v2.13.2
+- Fixed Chrome `Reload site? Changes that you made may not be saved.` appearing after intentional in-app reloads.
+- Internal app reloads now bypass `beforeunload` only after persistence.
+- Genuine browser-leave/reload protection remains.
+
+## v2.13.3
+- Added clickable studied dates in the streak calendar.
+- Added `dailyStats` persistence for date-level study detail from v2.13.3 onward.
+- Daily detail includes word questions, New words, correct/wrong, accuracy, Sentence Copy, and Sentence Recall activity.
+- Historical study dates from older versions remain visible but do not receive invented numeric statistics.
+
+## v2.13.4
+- Aligned Custom Study focus mode with actual question behavior.
+- Meaning focus now uses meaning → delayed meaning confirmation.
+- Listening focus uses meaning foundation → listening.
+- Reverse focus uses meaning foundation → reverse.
+- Spelling focus uses meaning foundation → spelling.
+- Auto mix preserves adaptive secondary-skill selection.
+- Spelling-focus candidate selection now excludes forms that are not eligible under `simpleFrench()`.
+- Preserved separate skill evidence: Meaning-only success does not advance Listening/Reverse.
+- JS syntax QA passed; 2,866-card and English sidecar corpora unchanged.
