@@ -1,6 +1,6 @@
 # TEF Vocab Loop — PROJECT HANDOFF
 
-**Current baseline:** `TEF_Vocab_Loop_v2_13_0.html`  
+**Current baseline:** `TEF_Vocab_Loop_v2_13_4.html`  
 **Read first in a new session.** For the full reasoning/history, read `TEF_Vocab_Project_History.md`.
 
 ---
@@ -785,3 +785,57 @@ Current highest-value future work:
 8. Recommended sentence curation,
 9. backup/migration robustness,
 10. later PWA/native/cloud packaging.
+
+
+---
+
+## 30. v2.13.1–v2.13.4 recent invariants
+
+### Meaning / distractor QA
+Real-use screenshots are high-value semantic QA evidence.
+If a multiple-choice item has more than one defensible answer, fix the source meaning or ambiguity instead of expecting the learner to infer intent.
+
+Keep close-but-distinct confusables. Block genuine overlap.
+
+### Intentional browser reload
+The app has a global `beforeunload` protection layer.
+When the app itself intentionally reloads after saving state, it must explicitly mark that exit as allowed.
+Do not remove genuine leave protection just to silence internal reload warnings.
+
+### Calendar daily stats
+- `studyDays` = the learner studied on that date.
+- `dailyStats` = numeric detail recorded from v2.13.3 onward.
+
+Never backfill old dates with guessed counts from cumulative attempts or last-attempt timestamps.
+
+### Custom focus semantics — v2.13.4
+The selector is a real focus control:
+
+- `mix`: adaptive secondary logic
+- `meaning`: meaning → delayed meaning confirmation
+- `audio`: meaning foundation → listening
+- `reverse`: meaning foundation → reverse
+- `typing`: meaning foundation → spelling
+
+A finite session target being complete does **not** mean the whole card is mastered.
+Only actually attempted skills should advance.
+
+Spelling focus filters candidates through `simpleFrench()` so the learner does not choose Spelling and unexpectedly receive another skill because a form is ineligible.
+
+### Primary deployment target
+GitHub Pages + Chrome is the primary real-use target.
+Single-file direct-open HTML remains useful, but weak Android HTML Viewer compatibility is not a reason to destabilize the deployed browser experience.
+
+---
+
+## 31. Current unresolved Custom Study QA
+
+See `reports/V2_13_3_CUSTOM_STUDY_QA.md`.
+
+Open items:
+1. finite-session future-task fallback can collapse intended real-interaction spacing;
+2. Level = All exposes equivalent semantic topics under different raw category names;
+3. narrow scopes can request 20/30/50 even when fewer candidates exist;
+4. Review-only empty state is generic.
+
+The finite-spacing item affects learning behavior and should be handled before cosmetic Custom Study improvements.
