@@ -417,3 +417,130 @@ Before shipping a future version, verify at minimum:
 26. Sentence Recommended/All modes still render.
 27. FR/KO/EN examples remain synchronized after content edits.
 28. direct-open Android remains viable, while Back interception is treated as best-effort.
+
+
+---
+
+# v2.13.1 meaning / distractor QA
+
+Checked:
+- 2,866 stable cards retained
+- targeted meaning/notation fixes applied
+- ambiguity guard present for overlapping distractor pairs
+- close-but-distinct confusables remain allowed
+- JS syntax PASS
+
+See `reports/V2_13_1_MEANING_DISTRACTOR_QA.md`.
+
+---
+
+# v2.13.2 internal-reload QA
+
+Checked:
+- app-owned reload can bypass `beforeunload` after persistence
+- genuine unload protection remains
+- no card/content mutation
+
+Primary browser validation target: GitHub Pages + Chrome.
+
+---
+
+# v2.13.3 calendar daily-stat QA
+
+Checked:
+- studied dates are clickable
+- `dailyStats` normalizes safely for old saves
+- word questions add per-day question/correct/wrong totals
+- Sentence Copy/Recall contributes to daily activity
+- historical `studyDays` remains compatible
+- old days without `dailyStats` show legacy/no-detail state
+- no fabricated backfill
+- JS syntax PASS
+- CARDS and EN_DATA corpora unchanged
+
+---
+
+# v2.13.3 Custom Study full QA
+
+A static/simulation pass exercised **5,700 combinations** across level, topic, size, focus, and New-word composition.
+
+Passed:
+- Review-only excludes unintroduced New
+- New25 reaches minimum when enough New exist
+- no duplicate selected IDs
+- level/topic filters do not leak
+- focus/new policy survives saved-session state
+
+Findings:
+- Spelling focus could select ineligible forms and silently fall back
+- finite-session delay may collapse without available bridge work
+- Level=All has duplicate semantic topic labels
+- Meaning focus previously inserted an adaptive secondary skill
+- requested size can exceed available scope
+- Review-only empty text is generic
+
+v2.13.4 fixed Spelling-focus and Meaning-focus behavior.
+The finite-spacing/topic-canonicalization/size-availability items remain open.
+
+See `reports/V2_13_3_CUSTOM_STUDY_QA.md`.
+
+---
+
+# v2.13.4 focus-mode QA
+
+Passed:
+- JavaScript syntax
+- CARDS corpus unchanged from v2.13.3
+- EN_DATA corpus unchanged from v2.13.3
+- focus mapping:
+  - meaning → meaning
+  - audio → listening
+  - reverse → reverse
+  - typing → spelling
+  - mix → adaptive
+- Spelling-focus candidate filter uses `simpleFrench()`
+- 2,167 / 2,866 cards are eligible under the current spelling-form rule
+
+Regression invariant:
+A Meaning-focused success must not advance Listening/Reverse evidence.
+
+See `reports/V2_13_4_QA_REPORT.md`.
+
+---
+
+# Current regression checklist — v2.13.4
+
+Before shipping a future version, verify at minimum:
+
+1. JS syntax passes.
+2. Card count remains 2,866 unless an intentional migration is documented.
+3. Card IDs remain stable.
+4. English sidecar still covers all IDs.
+5. Existing progress loads.
+6. Old saves without `dailyStats` normalize safely.
+7. New cards are never tested before introduction.
+8. Seen ≠ Learning.
+9. Failed meaning can reach Relearn Meaning and delayed retest.
+10. Today Auto / New25 / Review-only remain distinct.
+11. Custom new-word mix remains independent from focus skill.
+12. Review-only never introduces New.
+13. Custom New25 reaches quota when sufficient New exists.
+14. Meaning focus does not inject Listening/Reverse/Spelling.
+15. Listening focus reaches Listening after meaning foundation.
+16. Reverse focus reaches Reverse after meaning foundation.
+17. Spelling focus selects only eligible forms.
+18. Auto mix still uses adaptive secondary selection.
+19. Meaning-only activity advances meaning evidence only.
+20. Word audio does not speak grammar metadata.
+21. Word/example audio visual separation remains.
+22. Whole-topic selection remains category-balanced.
+23. Previous-introduction replay does not mutate learning state.
+24. Word-study session can resume.
+25. Sentence-practice session can resume independently.
+26. Sentence Copy/Recall counts remain independent.
+27. Recall graduation remains first-try/unrevealed only.
+28. Calendar studied dates still render.
+29. v2.13.3+ daily stats accumulate by local calendar date.
+30. Old studied dates do not show invented exact counts.
+31. Internal intentional reload does not trigger Chrome's native reload-warning prompt.
+32. GitHub Pages + Chrome remains the primary browser QA target.
