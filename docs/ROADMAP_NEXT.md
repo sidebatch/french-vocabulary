@@ -38,8 +38,6 @@ Goal:
 - reuse the existing improved example corpus
 - keep Copy and Recall history interpretable
 
-Do not automatically merge this with the current 15-count graduation system until the progression logic is tested.
-
 ## Priority 2 — learning-engine evidence quality
 
 Later:
@@ -62,13 +60,6 @@ Only after the learning loop is stable:
 - PWA polish
 - Android wrapper if native Back/offline behavior justifies it
 - cloud sync/login only if cross-device progress becomes important
-
-## Explicitly not a current priority
-
-- rankings/social
-- arbitrary gamification
-- large feature expansion
-- weak third-party HTML viewer compatibility at the cost of Chrome stability
 
 ## v2.13.5 stable Custom invariants
 
