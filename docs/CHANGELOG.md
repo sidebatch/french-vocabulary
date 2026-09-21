@@ -353,3 +353,17 @@ This changelog is intentionally concise. See `TEF_Vocab_Project_History.md` for 
 - Spelling-focus candidate selection now excludes forms that are not eligible under `simpleFrench()`.
 - Preserved separate skill evidence: Meaning-only success does not advance Listening/Reverse.
 - JS syntax QA passed; 2,866-card and English sidecar corpora unchanged.
+
+
+## v2.13.5
+- Hardened finite Custom Study delayed spacing so retry/follow-up chains use real intervening interactions when possible.
+- Added bridge scheduling: promote an in-session New intro or use a focus-compatible reinforcement question from a completed in-scope target before falling back to logical-time jump.
+- Increased finite intro/secondary/retry offsets to support minimum three real intervening interactions in standard tested sessions.
+- Re-pushes Meaning retry timing after the Relearn screen to prevent immediate re-test.
+- Added canonical Custom topic groups under Level = All for equivalent A1/B1 raw categories.
+- Added available-card count calculation after level/topic/focus/new-policy filters.
+- Disabled impossible 20/30/50 session sizes; scopes below 10 can use an exact dynamic size.
+- Added explicit Review-only zero-card message and disabled Start state.
+- Scheduler simulation: 1,000 runs, gaps under 3 = 0, logical fallback = 0 in tested 10-card New25 sessions.
+- Custom selection matrix: 16,020 combinations PASS.
+- 2,866 card IDs, CARDS, and EN_DATA unchanged.
