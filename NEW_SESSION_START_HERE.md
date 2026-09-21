@@ -2,9 +2,9 @@
 
 ## 현재 기준 버전
 
-**TEF Vocab Loop v2.13.4**
+**TEF Vocab Loop v2.13.5**
 
-새 세션에서는 `index.html` 또는 `TEF_Vocab_Loop_v2_13_4.html`을 최신 기준으로 사용한다.
+새 세션에서는 `index.html` 또는 `TEF_Vocab_Loop_v2_13_5.html`을 최신 기준으로 사용한다.
 
 현재 핵심 데이터:
 
@@ -292,7 +292,7 @@ Sentence:
 GitHub 저장소 권장 구조:
 
 - `index.html` — GitHub Pages 최신 앱
-- `TEF_Vocab_Loop_v2_13_4.html` — 현재 스냅샷
+- `TEF_Vocab_Loop_v2_13_5.html` — 현재 스냅샷
 - `NEW_SESSION_START_HERE.md`
 - `NEXT_SESSION.md`
 - `docs/PROJECT_HANDOFF.md`
@@ -334,7 +334,7 @@ GitHub 저장소 권장 구조:
 7. 최신 QA / example audit
 8. `index.html`
 
-새 세션에서는 **v2.13.4를 기준으로 기존 product decisions를 보존**한다.
+새 세션에서는 **v2.13.5를 기준으로 기존 product decisions를 보존**한다.
 
 
 ---
@@ -386,3 +386,41 @@ Spelling focus filters candidates through the existing simple-form eligibility r
 See:
 - `docs/reports/V2_13_3_CUSTOM_STUDY_QA.md`
 - `docs/reports/V2_13_4_QA_REPORT.md`
+
+
+---
+
+## v2.13.5 — Custom Study hardening
+
+v2.13.4의 남은 Custom Study 우선 수정 4개를 안정화했다.
+
+1. **실제 delayed spacing**
+   - finite session이 낼 문제가 없다고 logical turn만 점프하는 것을 줄였다.
+   - 가능한 경우 아직 소개하지 않은 session target을 먼저 소개하거나, 완료된 같은 session target에서 focus-compatible bridge 문제를 사용한다.
+   - standard 10+ card QA에서는 최소 3개의 intervening interaction을 유지했다.
+
+2. **Level = All canonical topics**
+   - Verbs / Adjectives / Prepositions / Places / Professions / Objects 등 레벨별 raw category가 달랐던 동일 의미 주제를 Custom UI에서 하나로 묶었다.
+   - underlying card category는 변경하지 않았다.
+
+3. **available-count-aware size**
+   - level/topic/focus/new-policy를 모두 적용한 후 사용 가능 카드 수를 계산한다.
+   - 불가능한 20/30/50은 비활성화한다.
+   - 10개 미만이면 정확한 동적 개수 옵션을 제공한다.
+
+4. **Review-only empty state**
+   - 복습 가능한 카드가 0개면 `이 범위에는 복습할 단어가 없습니다.`를 표시하고 시작을 비활성화한다.
+
+QA:
+- scheduler 1,000 runs
+- Custom matrix 16,020 combinations
+- 2,866 card IDs unchanged
+- corpus unchanged
+- JS syntax PASS
+
+Important limitation:
+아주 작은/퇴화된 범위에서는 실제 간격을 만들 카드 자체가 부족할 수 있다. 이 경우 범위 밖 단어를 억지로 가져오지 않고 last-resort fallback을 유지한다.
+
+### 다음 세션
+새 기능을 바로 추가하지 말고 먼저 실제 Android Chrome에서 짧게 회귀 확인한다.
+그 후 가장 높은 가치 후보는 sentence partial cloze / progressive hint reduction이다.
