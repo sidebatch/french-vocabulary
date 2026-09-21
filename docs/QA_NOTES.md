@@ -544,3 +544,65 @@ Before shipping a future version, verify at minimum:
 30. Old studied dates do not show invented exact counts.
 31. Internal intentional reload does not trigger Chrome's native reload-warning prompt.
 32. GitHub Pages + Chrome remains the primary browser QA target.
+
+
+---
+
+# v2.13.5 Custom Study hardening QA
+
+Full report:
+`reports/V2_13_5_QA_REPORT.md`
+
+## Scheduler simulation
+- runs: 1,000
+- tested: 10-card New25 finite sessions
+- Meaning subset included forced wrong-answer → Relearn → Retry paths
+- minimum non-immediate chain gap: 3 real interactions
+- gaps under 3: 0
+- logical-time fallback: 0
+- bridge tasks exercised
+
+Focus regression:
+- Meaning → meaning only
+- Listening → meaning + listening
+- Reverse → meaning + reverse
+- Spelling → meaning + spelling
+
+## Custom selection matrix
+Dimensions:
+- fresh / half-introduced / all-introduced
+- ALL / A1-A2 / B1-B2
+- every available topic including canonical ALL-level groups
+- mix / meaning / audio / reverse / typing
+- auto / new25 / review
+- 10 / 20 / 30 / 50
+
+Total combinations: **16,020**
+
+Failures:
+- duplicate selected IDs: 0
+- level leakage: 0
+- topic leakage: 0
+- Spelling-ineligible in typing focus: 0
+- New in Review-only: 0
+- New25 minimum failures where supply allowed it: 0
+
+## Integrity
+- cards: 2,866
+- unique IDs: 2,866
+- CARDS SHA-256 unchanged
+- EN_DATA SHA-256 unchanged
+- JS syntax PASS
+- backup filename updated to v2_13_5
+
+## Limitation
+A tiny/degenerate scope can make three real intervening interactions mathematically impossible. The app keeps a last-resort in-scope fallback rather than introducing out-of-scope cards.
+
+## Real-device follow-up
+Before new features, manually check on GitHub Pages + Android Chrome:
+1. Meaning wrong → Relearn → delayed retry
+2. Listening/Reverse/Spelling focused sessions
+3. canonical topic grouping
+4. disabled impossible sizes
+5. Review-only zero state
+6. finite-session resume
