@@ -2,7 +2,7 @@
 
 개인용 **TEF Canada 프랑스어 어휘 학습 앱**입니다.
 
-현재 기준 버전: **v2.13.4**
+현재 기준 버전: **v2.13.5**
 
 앱은 single-file HTML 구조이며, GitHub Pages에서는 `index.html`이 최신 실행 파일입니다.
 
@@ -34,7 +34,7 @@
 
 ## v2.13.x 주요 변경
 
-### v2.13.4
+### v2.13.5
 - 맞춤 학습의 `집중 방식` 의미를 실제 출제와 일치시킴.
 - 뜻: 소개 → 뜻 → delayed 뜻 재확인.
 - 듣기: 소개 → 기본 뜻 확인 → 듣기.
@@ -65,7 +65,7 @@
 
 ```text
 index.html
-TEF_Vocab_Loop_v2_13_4.html
+TEF_Vocab_Loop_v2_13_5.html
 README.md
 GITHUB_UPDATE_README.md
 NEW_SESSION_START_HERE.md
@@ -95,7 +95,7 @@ docs/
 - 예문 수정 시 French / Korean / English를 함께 동기화한다.
 - 이미 좋은 예문은 불필요하게 다시 수정하지 않는다.
 
-## 집중 방식 규칙 — v2.13.4
+## 집중 방식 규칙 — v2.13.5
 
 맞춤 학습에서 `집중 방식`은 실제 문제 유형을 의미합니다.
 
@@ -127,14 +127,16 @@ v2.13.3부터는 별도 `dailyStats`에 날짜별 상세 통계를 함께 저장
 
 ## 현재 다음 우선 QA
 
-최근 맞춤 학습 전체 QA에서 남아 있는 주요 후보:
+v2.13.5에서 기존 Custom Study 우선 수정 4개를 정리했습니다.
 
-1. finite Custom session에서 delayed task 사이의 **실제 intervening interaction 수 보장**
-2. Level = All에서 A1/B1의 같은 의미 주제를 canonical topic으로 통합
-3. 선택한 20/30/50보다 실제 후보 카드가 적을 때 UX 개선
-4. Review-only 범위가 비었을 때 더 구체적인 안내
-5. 이후 문장 cloze / progressive hint reduction 설계
+다음은 새 기능보다 먼저 실제 Android Chrome에서:
+1. Meaning / Listening / Reverse / Spelling Custom 세션의 체감 간격 확인
+2. narrow topic에서 사용 가능 개수/disabled size 확인
+3. Review-only 빈 범위 안내 확인
+4. 기존 진행도와 resume 회귀 확인
+
+그 다음 높은 학습가치 후보는 문장 partial cloze / progressive hint reduction입니다.
 
 ---
 
-Current baseline: **TEF Vocab Loop v2.13.4**
+Current baseline: **TEF Vocab Loop v2.13.5**
