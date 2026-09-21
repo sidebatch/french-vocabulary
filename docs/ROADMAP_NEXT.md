@@ -1,64 +1,30 @@
 # TEF Vocab Loop — ROADMAP NEXT
 
-**Current baseline:** v2.13.4
+**Current baseline:** v2.13.5
 
 The product direction remains:
 
 **Recognition → Recall → Production**
 
-Do not prioritize feature count over learning value or reliability.
+## Priority 0 — real-device regression before any new feature
 
-## Priority 1 — finite Custom spacing hardening
+v2.13.5 closed the previously identified Custom Study hardening items.
 
-The most important open QA item is the finite-session queue behavior.
+Verify on GitHub Pages + Android Chrome:
+- Meaning wrong → Relearn → retry does not come back immediately
+- Listening focus stays Listening after meaning foundation
+- Reverse focus stays Reverse after meaning foundation
+- Spelling focus stays Spelling and uses only eligible forms
+- Level=All shows canonical semantic topics
+- narrow scopes disable impossible session sizes
+- Review-only with zero eligible cards shows the specific message
+- saved finite sessions resume correctly
 
-Current issue:
-when no task is currently available, the finite selector can take the earliest future task and effectively advance logical turn time. That can reduce the number of **real intervening learner interactions** before:
-- a new-word meaning test,
-- a delayed retry,
-- a follow-up confirmation.
+Do not start a new feature until this pass is acceptable.
 
-Goal:
-preserve the existing “several questions later” learning principle in finite Custom sessions, not just in logical turn numbers.
+## Priority 1 — progressive sentence retrieval
 
-Do not solve this with immediate duplicate questions or meaningless filler.
-
-## Priority 2 — canonical topic grouping for Level = All
-
-Equivalent source categories currently appear separately under Level = All, for example:
-
-- `LES VERBES` / `Les verbes`
-- `ADJECTIFS` / `L’adjectif`
-- `PRÉPOSITIONS` / `Les prépositions`
-- `L’ENDROIT` / `L’endroit`
-- `LA PROFESSION` / `La profession`
-- `OBJETS` / `L’objet`
-
-Preferred solution:
-add a canonical grouping layer for selection/display while preserving the underlying source category strings.
-
-## Priority 3 — available-count-aware session size
-
-Narrow scopes may contain fewer than 20/30/50 eligible cards.
-
-Improve setup UX so target size does not silently shrink.
-
-Possible directions:
-- show `사용 가능 N개`
-- disable impossible sizes
-- or show the effective target before start
-
-Spelling-focus availability must be calculated **after** spelling eligibility filtering.
-
-## Priority 4 — small Custom Study UX cleanup
-
-- Review-only empty state should explicitly say there are no review cards in the selected scope.
-- Keep setup visually light.
-- Do not overload the screen with pre-session statistics unless they directly help the choice.
-
-## Priority 5 — progressive sentence recall
-
-After Custom Study hardening, the strongest learning-feature candidate is the missing bridge between Copy and full Recall:
+After regression, the strongest new learning-value candidate is still the missing bridge between Copy and full Recall:
 
 1. full sentence visible
 2. one target chunk blank
@@ -66,32 +32,52 @@ After Custom Study hardening, the strongest learning-feature candidate is the mi
 4. translation + reduced cue
 5. full production
 
-Typing should remain retrieval practice, not mechanical keyboard labor.
+Goal:
+- increase retrieval gradually
+- avoid turning sentence practice into mechanical typing
+- reuse the existing improved example corpus
+- keep Copy and Recall history interpretable
 
-## Later architecture items
+Do not automatically merge this with the current 15-count graduation system until the progression logic is tested.
 
+## Priority 2 — learning-engine evidence quality
+
+Later:
 - multi-skill Weak representation
-- stronger Mastered evidence
+- stronger Mastered spaced evidence
 - clearer Weak / Hard / ★ semantics
-- better distractors while preserving ambiguity safety
-- sentence Recommended curation precision
-- PWA / Android wrapper if stronger native-back/offline behavior becomes necessary
-- optional sync/login only when cross-device progress justifies the complexity
+- continued distractor quality work with ambiguity safety
 
-## Explicitly not a priority
+## Priority 3 — library usability
 
-- ranking/social features
+Possible later improvements:
+- Word status filters / sorting
+- accent-insensitive search
+- stronger Sentence Recommended curation
+- optional issue/report flag for individual content QA
+
+## Packaging later
+
+Only after the learning loop is stable:
+- PWA polish
+- Android wrapper if native Back/offline behavior justifies it
+- cloud sync/login only if cross-device progress becomes important
+
+## Explicitly not a current priority
+
+- rankings/social
 - arbitrary gamification
-- changing already-good examples just to make them different
-- weak third-party HTML-viewer compatibility at the cost of Chrome/GitHub Pages stability
+- large feature expansion
+- weak third-party HTML viewer compatibility at the cost of Chrome stability
 
-## Current stable focus behavior — v2.13.4
+## v2.13.5 stable Custom invariants
 
-- Meaning = meaning → delayed meaning confirmation
+- finite delayed chains prefer real intervening interactions
+- Meaning = meaning only
 - Listening = meaning foundation → listening
 - Reverse = meaning foundation → reverse
 - Spelling = meaning foundation → spelling
 - Auto mix = adaptive
-- Spelling target pool excludes ineligible forms
-
-Do not regress this behavior while fixing finite-session spacing.
+- Level=All canonical topic grouping affects selection/display only
+- session size reflects current eligible pool
+- Review-only zero scope cannot start
