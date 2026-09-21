@@ -2,7 +2,7 @@
 
 **Document purpose:** preserve the project’s memory so a future developer or a new GPT session can continue the app without losing small design intentions, user feedback, learning-engine philosophy, or reasons behind seemingly minor UI choices.
 
-**Documented baseline:** `TEF_Vocab_Loop_v2_13_4.html`  
+**Documented baseline:** `TEF_Vocab_Loop_v2_13_5.html`  
 **Vocabulary corpus:** 2,866 unique study cards  
 **Primary use case:** a Korean-speaking learner studying French vocabulary for practical use and TEF-oriented progression, especially through short, repeatable mobile study sessions.  
 **Primary device/workflow:** Android phone and laptop; a downloaded single HTML file that can be opened directly is intentionally acceptable.
@@ -2058,7 +2058,7 @@ Spelling focus now filters the candidate pool through the existing simple-form e
 
 Current application baseline:
 
-`TEF_Vocab_Loop_v2_13_4.html`
+`TEF_Vocab_Loop_v2_13_5.html`
 
 Key state:
 - 2,866 stable cards
@@ -2077,3 +2077,26 @@ Key state:
 
 Highest-priority open engine work:
 finite Custom session must preserve **real intervening interactions** before delayed follow-up/retry even when its pending queue has no immediately available task.
+
+
+---
+
+# 67. v2.13.5 — Custom Study hardening
+
+After v2.13.4 clarified focus-mode semantics, the remaining Custom Study problems were scheduler/selection-quality issues rather than missing features.
+
+v2.13.5 addressed four items:
+1. real interaction spacing for finite delayed tasks;
+2. canonical Level=All topic grouping without rewriting stored categories;
+3. available-count-aware session sizes;
+4. specific Review-only zero-card handling.
+
+Scheduler strategy now prefers current work, then future in-session New introductions, then focus-compatible bridge reinforcement from completed in-scope targets. Only degenerate scopes use the last-resort future-turn fallback.
+
+QA:
+- 1,000 scheduler simulations: gaps under 3 = 0, logical fallback = 0 in tested standard sessions
+- 16,020 Custom selection combinations PASS
+- 2,866 cards and IDs unchanged
+- CARDS and EN_DATA unchanged
+
+The next step is short real-device regression on GitHub Pages + Android Chrome before any new feature work.
