@@ -1,6 +1,6 @@
 # TEF Vocab Loop — PROJECT HANDOFF
 
-**Current baseline:** `TEF_Vocab_Loop_v2_13_4.html`  
+**Current baseline:** `TEF_Vocab_Loop_v2_13_5.html`  
 **Read first in a new session.** For the full reasoning/history, read `TEF_Vocab_Project_History.md`.
 
 ---
@@ -839,3 +839,65 @@ Open items:
 4. Review-only empty state is generic.
 
 The finite-spacing item affects learning behavior and should be handled before cosmetic Custom Study improvements.
+
+
+---
+
+## 32. v2.13.5 Custom Study hardening
+
+v2.13.5 closes the four highest-priority Custom Study QA findings from v2.13.4.
+
+### Real interaction spacing
+Finite Custom sessions now try to preserve actual learner interactions before delayed New tests/retries/follow-ups instead of merely jumping logical turn numbers.
+
+When no task is currently available, the scheduler prefers:
+1. promoting an in-session future New introduction, then
+2. a focus-compatible bridge question from an already completed in-scope target.
+
+Only when a scope is too small to produce valid bridge work does the old future-turn fallback remain.
+
+QA on standard 10-card New25 sessions:
+- 1,000 simulated runs
+- minimum non-immediate chain gap: 3 interactions
+- gaps under 3: 0
+- logical-time fallback: 0
+
+### Canonical topics under Level = All
+Equivalent source categories are grouped only in Custom selection/display:
+- Verbs
+- Adjectives
+- Prepositions
+- Places
+- Professions
+- Objects
+
+Underlying `category` values stay unchanged for data integrity.
+
+### Available-count-aware size
+Custom availability is calculated after:
+- level
+- topic
+- focus mode
+- New-word policy
+
+Spelling focus therefore counts only `simpleFrench()`-eligible forms.
+Review-only counts only introduced cards.
+
+Impossible 20/30/50 choices are disabled.
+Scopes under 10 cards receive an exact dynamic size option.
+
+### Review-only zero state
+If the selected review scope has zero eligible cards:
+- show a specific review-empty message,
+- disable Start.
+
+### Regression invariant
+Do not regress v2.13.4 focus semantics while maintaining spacing:
+- Meaning = meaning only
+- Listening = meaning foundation → listening
+- Reverse = meaning foundation → reverse
+- Spelling = meaning foundation → spelling
+- Auto mix = adaptive
+
+### Current next step
+Before new features, perform a short real-device pass on GitHub Pages + Android Chrome.
